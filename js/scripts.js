@@ -30,27 +30,52 @@ function init() {
             //Add new cell to our cellsIndex arrary 
             cellsIndex.push(eachCell)
         }
+    }
+    createBoard()
         // * Snake Starting Position
         // Now we put the snake in it's starting position on the board
 
     function materialiseSnake (snake, cellsIndex) {
+        document.querySelectorAll('.grid > div').forEach(a => a.classList.remove('snakeOnBoard')) //clears the classes before moving the snake
         for (let i = 0; i < snake.length; i++){
-            cellsIndex[snake[i]].classList.add('snakeOn')
+            cellsIndex[snake[i]].classList.add('snakeOnBoard')
             }
-        }
+    }
         materialiseSnake(snake, cellsIndex)
-        console.log(materialiseSnake)
-        // const startingPosition = snake.map()
-        // let currentSnakePosition = startingPosition
-        // cellsIndex[startingPosition].classList.add('snakeOn')
-    }    
-    createBoard()
+    
+    // * Snake Movement 
+    // These are the events we'll use to move the snake
+    document.addEventListener("keyup", snakeMovement)
+
     
 
+    function snakeMovement (event){
+        const up = 38 // if I wasnt to use asdw then add the values as arrays 
+        const down = 40
+        const left = 37
+        const right = 39
 
+        const lastElementIndex = snake.length-1
+        const lastElementValue = snake[lastElementIndex]
 
-}
+        const key = event.keyCode
 
+        if (key === up) {
+            snake.push(lastElementValue-20)
+            snake.shift()
 
+        } else if (key === down) {
+            snake.push(lastElementValue+20)
+            snake.shift()            
+        } else if (key === left) {
+            snake.push(lastElementValue-1)
+            snake.shift()   
+        } else if (key === right) {
+            snake.push(lastElementValue+1)
+            snake.shift()   
+        } else console.log('invalid key')
+    materialiseSnake(snake, cellsIndex)
+    }    
+};
 
 window.addEventListener('DOMContentLoaded', init)
