@@ -2,6 +2,7 @@ function init() {
     //* Setting up the board/grid
     // Create our grid
     const grid = document.querySelector('.grid')
+    
 
     //Grid config
     const width = 20
@@ -55,15 +56,19 @@ function init() {
         const left = 37
         const right = 39
 
-        const lastElementIndex = snake.length-1
+        //these two consts are to be able to find the value of the last element, and move the head of the snake according to the key press
+        const lastElementIndex = snake.length-1 
         const lastElementValue = snake[lastElementIndex]
 
         const key = event.keyCode
 
         if (key === up) {
+            if (document.getAttribute('data-cell-id')) {
             snake.push(lastElementValue-20)
-            snake.shift()
-
+            console.log('s')
+            } else {
+            snake.push(lastElementValue-20)
+            snake.shift() }
         } else if (key === down) {
             snake.push(lastElementValue+20)
             snake.shift()            
@@ -76,6 +81,19 @@ function init() {
         } else console.log('invalid key')
     materialiseSnake(snake, cellsIndex)
     }    
+
+    // * Adding the Food
+    function addFood () {
+        function getRndInteger(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) ) + min;
+        }
+        let randomFoodIndex = getRndInteger(0,cellCount)
+        cellsIndex[randomFoodIndex].classList.add('foodOnBoard')
+        return randomFoodIndex
+    }
+    addFood()
+
+// ! END OF THE FILE STUPID !
 };
 
 window.addEventListener('DOMContentLoaded', init)

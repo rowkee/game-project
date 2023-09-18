@@ -37,4 +37,8 @@
   .snakeOnBoard {
     background-color: black;
   }
+
+  .foodOnBoard {
+    background-color: aqua;
+  }
   
