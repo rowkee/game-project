@@ -13,6 +13,10 @@ function init() {
   
     // Creating the snake 
     let snake = [167, 168, 169]
+
+    //Adding sounds effects
+    let gameOverSound = new Audio('./assets/retro-game-sfx_jump-bumpwav-14853.mp3')
+    let snakeEatingSound = new Audio('./assets/coin-collect-retro-8-bit-sound-effect-145251.mp3')
   
     // Create the divs/cells 
     function createBoard () {
@@ -33,8 +37,9 @@ function init() {
         }
     }
     createBoard()
-        // * Snake Starting Position
-        // Now we put the snake in it's starting position on the board
+
+    // * Snake Starting Position
+    // Now we put the snake in it's starting position on the board
   
     function materialiseSnake () {
         document.querySelectorAll('.grid > div').forEach(a => a.classList.remove('snakeOnBoard')) //clears the classes before moving the snake
@@ -50,15 +55,7 @@ function init() {
     document.addEventListener("keydown", snakeMovement)
   
     let snakeDirection = 1
-    
-    function keepMovingUp () {
-        const event = new KeyboardEvent('keydown', {
-            keyCode: 38,
-          });
-        return event
-    }
-    // setInterval(snakeMovement, 500)
-    
+        
     function snakeMovement (event){
         const UP = 38 // if I wasnt to use asdw then add the values as arrays 
         const DOWN = 40
@@ -88,25 +85,46 @@ function init() {
     
     }    
   
-    
+     // this sets how fast the snake moves
+     let startingIntervalSpeed = 400
+     let reduceIntervalSpeedBy = 5
+     let intervalSpeed = startingIntervalSpeed
+     setInterval(keepMoving, intervalSpeed)
+
     function keepMoving() {
         //these two consts are to be able to find the value of the last element, and move the head of the snake according to the KEY press
         const snakesHeadIndex = snake.length-1 
         let snakesHeadValue = snake[snakesHeadIndex]
-
-      if (cellsIndex[snakesHeadValue+snakeDirection].classList.contains('foodOnBoard')) {
-        snake.push(snakesHeadValue+snakeDirection)
-        removeFood()
-        addFood()
-    } else {
-        snake.push(snakesHeadValue+snakeDirection)
-        snake.shift()
-    }
-    materialiseSnake(snake, cellsIndex)
-    gameOver()
+        // * Game Over Checker
+        if (
+            snakesHeadValue + snakeDirection < 0 || // Snake's head is above the top boundary
+            snakesHeadValue + snakeDirection >= cellCount || // Snake's head is below the bottom boundary
+            snakesHeadValue % width === 0 && snakeDirection === -1|| // Snake's head is on the left edge
+            (snakesHeadValue + 1) % width === 0 && snakeDirection === 1 || // Snake's head is on the right edge
+            cellsIndex[snakesHeadValue + snakeDirection].classList.contains('snakeOnBoard')
+        ) {
+            gameOverSound.play();
+            alert('GAME OVER');
+            return 
+        }
+        // * Food Checker
+        if (cellsIndex[snakesHeadValue+snakeDirection].classList.contains('foodOnBoard')) {
+            snake.push(snakesHeadValue+snakeDirection)
+            snakeEatingSound.play();
+            removeFood()
+            addFood()
+            intervalSpeed = intervalSpeed - reduceIntervalSpeedBy
+            clearInterval(intervalSpeed)
+            setInterval(keepMoving, intervalSpeed)
+            console.log(intervalSpeed)
+        } else {
+            snake.push(snakesHeadValue+snakeDirection)
+            snake.shift()
+        }
+        materialiseSnake()
     }
   
-    setInterval(keepMoving, 100)
+   
   
   
     let randomFoodIndex = null // this assigned in the addFood function, but also by removeFood therefore lives outside of each function
@@ -125,26 +143,6 @@ function init() {
     function removeFood () {
         cellsIndex[randomFoodIndex].classList.remove('foodOnBoard')
     }
-  
-    // * End Game
-    function gameOver() {
-        const snakesHeadIndex = snake.length - 1;
-        const snakesHeadValue = snake[snakesHeadIndex];
-    
-        // Check if the snake's head is out of bounds
-        if (
-            snakesHeadValue + snakeDirection < 0 || // Snake's head is above the top boundary
-            snakesHeadValue + snakeDirection >= cellCount || // Snake's head is below the bottom boundary
-            snakesHeadValue + snakeDirection % width === -1 || // Snake's head is on the left edge
-            snakesHeadValue + snakeDirection % width === width - 1 || // Snake's head is on the right edge
-            cellsIndex[snakesHeadValue + snakeDirection].classList.contains('snakeOnBoard')
-        ) {
-            alert('GAME OVER');
-        }
-    }
-    
-
-
   
   // ! END OF THE FILE STUPID !
   };
