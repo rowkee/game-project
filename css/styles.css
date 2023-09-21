@@ -11,17 +11,23 @@
   }
   
   h1 { text-align: center;
+    margin-top: 100px;
   }
 
   h3 { text-align: center;
+    margin-bottom: 150px;
   }
 
+  .credits {
+    justify-content: right;
+    align-content: right;
+  }
   
   .grid-wrapper {
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
   }
   
   .grid {
@@ -49,7 +55,9 @@
   }
 
   .foodOnBoard {
-    background-color: aqua;
-    border-radius: 10px;
+    background-image: url('../assets/output-onlinepngtools\ \(3\).png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;;
   }
   

@@ -88,7 +88,7 @@ function init() {
   
      // this sets how fast the snake moves
      let startingIntervalSpeed = 400
-     let reduceIntervalSpeedBy = 5
+     let reduceIntervalSpeedBy = 2
      let intervalSpeed = startingIntervalSpeed
      setInterval(keepMoving, intervalSpeed)
 
@@ -134,8 +134,6 @@ function init() {
   
     // * Adding the Food
 
-    
-
     function addFood () {
         function getRndInteger(min, max) {
             return Math.floor(Math.random() * (max - min + 1) ) + min;
@@ -146,7 +144,6 @@ function init() {
     }
 
     addFood()
-    console.log(score)
   
     // * Removing food
     function removeFood () {
