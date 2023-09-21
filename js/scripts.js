@@ -2,15 +2,16 @@ function init() {
     //* Setting UP the board/grid
     // Create our grid
     const grid = document.querySelector('.grid')
-    
   
     //Grid config
     const width = 20
     const height = 20
     const cellCount = width * height
-  
+    
     let cellsIndex = [] // this is the array where ALL of the cell indexs will be stored for us to access and target in functions because we can't use the data values??????
-  
+    
+    let score = 0
+
     // Creating the snake 
     let snake = [167, 168, 169]
 
@@ -104,11 +105,13 @@ function init() {
             cellsIndex[snakesHeadValue + snakeDirection].classList.contains('snakeOnBoard')
         ) {
             gameOverSound.play();
-            alert('GAME OVER');
+            clearInterval(intervalSpeed)
+            // alert('GAME OVER');
             return 
         }
-        // * Food Checker
+        // * Food Eater
         if (cellsIndex[snakesHeadValue+snakeDirection].classList.contains('foodOnBoard')) {
+            score++
             snake.push(snakesHeadValue+snakeDirection)
             snakeEatingSound.play();
             removeFood()
@@ -116,7 +119,7 @@ function init() {
             intervalSpeed = intervalSpeed - reduceIntervalSpeedBy
             clearInterval(intervalSpeed)
             setInterval(keepMoving, intervalSpeed)
-            console.log(intervalSpeed)
+            
         } else {
             snake.push(snakesHeadValue+snakeDirection)
             snake.shift()
@@ -130,14 +133,20 @@ function init() {
     let randomFoodIndex = null // this assigned in the addFood function, but also by removeFood therefore lives outside of each function
   
     // * Adding the Food
+
+    
+
     function addFood () {
         function getRndInteger(min, max) {
             return Math.floor(Math.random() * (max - min + 1) ) + min;
         }
         randomFoodIndex = getRndInteger(0,cellCount)
         cellsIndex[randomFoodIndex].classList.add('foodOnBoard')
+        document.querySelector('h3').innerText = `Score ${score}`
     }
+
     addFood()
+    console.log(score)
   
     // * Removing food
     function removeFood () {
@@ -148,9 +157,3 @@ function init() {
   };
   
   window.addEventListener('DOMContentLoaded', init)
-  
-  
-  
-  
-  
-  

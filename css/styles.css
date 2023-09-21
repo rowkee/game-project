@@ -1,12 +1,21 @@
 * {
     box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    font-family: 'Press Start 2P', cursive;
   }
   
   body {
     height: 100vh;
     margin: 0;
+    background-color: rgb(146, 177, 90);
   }
   
+  h1 { text-align: center;
+  }
+
+  h3 { text-align: center;
+  }
+
   
   .grid-wrapper {
     height: 100vh;
@@ -17,17 +26,17 @@
   
   .grid {
     align-items: center;
-    box-shadow: 0 0 20px 0 #04F404;
+    box-shadow: 0 0 100px 0 rgb(37, 44, 23);
     display: flex;
     flex-wrap: wrap;
     height: 100%;
     justify-content: center;
     height: 600px;
     width: 600px;
+    border: 3px rgb(37, 44, 23) solid;
   }
   
   .grid div {
-    border: 1px solid lightgrey;
     flex-grow: 1;
     height: 5%;
     width: 5%;
@@ -35,10 +44,12 @@
   }
 
   .snakeOnBoard {
-    background-color: black;
+    background-color: rgb(37, 44, 23);
+    border-radius: 10px;
   }
 
   .foodOnBoard {
     background-color: aqua;
+    border-radius: 10px;
   }
   
