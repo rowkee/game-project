@@ -55,7 +55,7 @@
   }
 
   .foodOnBoard {
-    background-image: url('./assets/output-onlinepngtools\ \(3\).png');
+    background-image: url('../assets/output-onlinepngtools\ \(3\).png');
     background-repeat: no-repeat;
     background-size: contain;
     cursor: pointer;;
