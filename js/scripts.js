@@ -11,12 +11,13 @@ function init() {
     let cellsIndex = [] // this is the array where ALL of the cell indexs will be stored for us to access and target in functions because we can't use the data values??????
     
     let score = 0
+    document.querySelector('h3').innerText = `Score ${score}`
 
     // Creating the snake 
     let snake = [167, 168, 169]
 
     //Adding sounds effects
-    let gameOverSound = new Audio('./assets/retro-game-sfx_jump-bumpwav-14853.mp3')
+    let gameOverSound = new Audio('./assets/negative_beeps-6008.mp3')
     let snakeEatingSound = new Audio('./assets/coin-collect-retro-8-bit-sound-effect-145251.mp3')
   
     // Create the divs/cells 
@@ -49,7 +50,6 @@ function init() {
             }
     }
     materialiseSnake()
-        
     
     // * Snake Movement 
     // These are the events we'll use to move the snake
@@ -65,17 +65,14 @@ function init() {
   
         const KEY = event.keyCode
   
-        //these two consts are to be able to find the value of the last element, and move the head of the snake according to the KEY press
-        const snakesHeadIndex = snake.length-1 
-        let snakesHeadValue = snake[snakesHeadIndex]
-        
+        //these two consts are to be able to find the value of the last element, and move the head of the snake according to the KEY press        
   
         if (KEY === UP && snakeDirection !== 20) {
             snakeDirection = -20
-          
+            event.preventDefault() // this stops the screen scrolling
         } else if (KEY === DOWN && snakeDirection !== -20) {
             snakeDirection= 20
-              
+            event.preventDefault() // this stops the screen scrolling
         } else if (KEY === LEFT && snakeDirection !== 1) {
             snakeDirection= -1
             
@@ -88,9 +85,9 @@ function init() {
   
      // this sets how fast the snake moves
      let startingIntervalSpeed = 400
-     let reduceIntervalSpeedBy = 2
+     const reduceIntervalSpeedBy = 20
      let intervalSpeed = startingIntervalSpeed
-     setInterval(keepMoving, intervalSpeed)
+     let moving = setInterval(keepMoving, intervalSpeed)
 
     function keepMoving() {
         //these two consts are to be able to find the value of the last element, and move the head of the snake according to the KEY press
@@ -104,22 +101,25 @@ function init() {
             (snakesHeadValue + 1) % width === 0 && snakeDirection === 1 || // Snake's head is on the right edge
             cellsIndex[snakesHeadValue + snakeDirection].classList.contains('snakeOnBoard')
         ) {
-            gameOverSound.play();
-            clearInterval(intervalSpeed)
-            // alert('GAME OVER');
+            gameOverSound.play()
+            clearInterval(moving)
+            showGameOverModal()
             return 
         }
         // * Food Eater
         if (cellsIndex[snakesHeadValue+snakeDirection].classList.contains('foodOnBoard')) {
             score++
+            document.querySelector('h3').innerText = `Score ${score}`
             snake.push(snakesHeadValue+snakeDirection)
             snakeEatingSound.play();
             removeFood()
             addFood()
-            intervalSpeed = intervalSpeed - reduceIntervalSpeedBy
-            clearInterval(intervalSpeed)
-            setInterval(keepMoving, intervalSpeed)
-            
+            if (intervalSpeed < 30) {
+                intervalSpeed = 30
+            } else {intervalSpeed = intervalSpeed - reduceIntervalSpeedBy
+            }
+            clearInterval(moving)
+            moving = setInterval(keepMoving, intervalSpeed)
         } else {
             snake.push(snakesHeadValue+snakeDirection)
             snake.shift()
@@ -127,8 +127,49 @@ function init() {
         materialiseSnake()
     }
   
+// * Stopping, resetting the game
+
+// Pretty obvious, but this shows the modal when the snake eats itself or hits the wall
+   function showGameOverModal () {
+        let gameOverSwitch = document.getElementById('gameOver');
+        gameOverSwitch.style.display='block';
+   }
+
+   // This code allows the user to play again if they like
+   const playAgainButton = document.getElementById('playAgain')
+   playAgainButton.addEventListener('click', hideGameOverModal)
+
+   function hideGameOverModal () {
+        let gameOverSwitch = document.getElementById('gameOver');
+        gameOverSwitch.style.display='none'
+        location.reload()
+   }
    
-  
+   // This code is for when the user selects no thanks
+   const noThanksButton = document.getElementById('noThanks')
+   noThanksButton.addEventListener('click', yNot)
+
+   // this function and the addyNotButton keep trolling the user by adding buttons 
+   function yNot () {
+        const list = document.querySelector(".buttons");
+        while (list.hasChildNodes()) { // this clears the existing buttons first
+            list.removeChild(list.firstChild);
+        }
+        addYNotButton () // then adds the first 'why not' button
+        const keepAskingY = document.querySelector('.buttons .yNot')
+        keepAskingY.addEventListener('click', addYNotButton) // then adds a listeners that keeps running the function each time the button is clicked
+    }
+
+    function addYNotButton (){
+        const list = document.querySelector(".buttons");
+        const yNot = document.createElement('button');
+        yNot.innerText = 'Why not?';
+        yNot.classList.add('yNot');
+        list.appendChild(yNot);
+    }
+    
+    
+
   
     let randomFoodIndex = null // this assigned in the addFood function, but also by removeFood therefore lives outside of each function
   
@@ -140,7 +181,6 @@ function init() {
         }
         randomFoodIndex = getRndInteger(0,cellCount)
         cellsIndex[randomFoodIndex].classList.add('foodOnBoard')
-        document.querySelector('h3').innerText = `Score ${score}`
     }
 
     addFood()

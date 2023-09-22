@@ -13,9 +13,23 @@
     <h1>Rick's Snake</h1>
     <h3></h3>
     <main class="grid-wrapper">
-        <section class="grid"> </section>
-    </main>
+        <section class="grid"></section>
+        <div class = 'container'>
+            <div class="modal" id='gameOver'>
+                <div class="modal-content">
+                    <h3>Ah shucks, snakey dead.</h3> 
+                    <p>Would you like to play again?</p>
+                <div class="buttons">
+                    <button id="playAgain">Play again.</button>
+                    <button id="noThanks">No thanks.</button>
+                </div>
+            </div>
+        </div>
+        <!-- <button id="gameOver">GAME OVER <br> Play again?</button> -->
+    </main> 
+
     <p class = "credits">Sound Effect from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=145251">Pixabay</a></p>
     <script src="./js/scripts.js"> </script>
+    
 </body>
 </html>
