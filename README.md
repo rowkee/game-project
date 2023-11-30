@@ -161,7 +161,17 @@ function yNot() {
     list.appendChild(yNot);
   }
 ```
+## Future Developments
+### BUGs
+* Ensure food doesn't generate where the snake already is
 
+### Features
+I'd love to add:
+* Playable on mobile
+* Save scores
+* Add a leaderboard
+* Add some more easter eggs
+  
 ## Summary
 ### Challenges 
 There were many challenges in this first project, but the ones that stood out were:
